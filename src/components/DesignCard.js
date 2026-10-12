@@ -37,7 +37,15 @@ export function renderDesignCard(design, opts = {}) {
         <span class="design-card-style">${design.style}</span>
       </div>
       <h3 class="design-card-title">${design.title}</h3>
-      <p class="design-card-budget">${design.budget}</p>
+      <div class="design-card-footer">
+        <p class="design-card-budget">${design.budget}</p>
+        <span class="design-card-view-link">
+          View Details
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </span>
+      </div>
     </div>
   `;
 

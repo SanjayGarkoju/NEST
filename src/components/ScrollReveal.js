@@ -39,4 +39,17 @@ export function initScrollReveal(container = document) {
   );
 
   targets.forEach(el => observer.observe(el));
+
+  // Safeguard: Ensure content never remains permanently hidden if observer stalls or viewport is complex
+  setTimeout(() => {
+    targets.forEach(el => {
+      if (!el.classList.contains('is-revealed')) {
+        const rect = el.getBoundingClientRect();
+        // If element is inside or near viewport, reveal immediately
+        if (rect.top < window.innerHeight + 100 && rect.bottom > -100) {
+          el.classList.add('is-revealed');
+        }
+      }
+    });
+  }, 1200);
 }

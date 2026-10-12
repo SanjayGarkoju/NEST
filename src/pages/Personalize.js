@@ -378,7 +378,5 @@ export function renderPersonalize() {
   body.appendChild(form);
   el.appendChild(body);
 
-  setTimeout(() => initScrollReveal(el), 30);
-
   return el;
 }

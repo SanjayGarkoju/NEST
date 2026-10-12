@@ -367,28 +367,31 @@ function renderFooter() {
         <div class="footer-col">
           <p class="footer-col-title">Discover</p>
           <ul class="footer-links" role="list">
-            <li><span class="footer-link" tabindex="0" data-page="browse">Browse Designs</span></li>
-            <li><span class="footer-link" tabindex="0">Living Room</span></li>
-            <li><span class="footer-link" tabindex="0">Bedroom</span></li>
-            <li><span class="footer-link" tabindex="0">Kitchen</span></li>
+            <li><span class="footer-link" tabindex="0" data-page="browse">Browse All Designs</span></li>
+            <li><span class="footer-link" tabindex="0" data-page="browse" data-filter="category" data-val="living-room">Living Room</span></li>
+            <li><span class="footer-link" tabindex="0" data-page="browse" data-filter="category" data-val="bedroom">Bedroom</span></li>
+            <li><span class="footer-link" tabindex="0" data-page="browse" data-filter="category" data-val="kitchen">Kitchen</span></li>
+            <li><span class="footer-link" tabindex="0" data-page="browse" data-filter="category" data-val="dining-room">Dining Room</span></li>
+            <li><span class="footer-link" tabindex="0" data-page="browse" data-filter="category" data-val="bathroom">Bathroom</span></li>
+            <li><span class="footer-link" tabindex="0" data-page="browse" data-filter="category" data-val="full-home">Full Home</span></li>
           </ul>
         </div>
         <div class="footer-col">
           <p class="footer-col-title">Styles</p>
           <ul class="footer-links" role="list">
-            <li><span class="footer-link" tabindex="0">Modern</span></li>
-            <li><span class="footer-link" tabindex="0">Scandinavian</span></li>
-            <li><span class="footer-link" tabindex="0">Minimalist</span></li>
-            <li><span class="footer-link" tabindex="0">Luxury</span></li>
+            <li><span class="footer-link" tabindex="0" data-page="browse" data-filter="style" data-val="modern">Modern</span></li>
+            <li><span class="footer-link" tabindex="0" data-page="browse" data-filter="style" data-val="scandinavian">Scandinavian</span></li>
+            <li><span class="footer-link" tabindex="0" data-page="browse" data-filter="style" data-val="minimalist">Minimalist</span></li>
+            <li><span class="footer-link" tabindex="0" data-page="browse" data-filter="style" data-val="luxury">Luxury</span></li>
+            <li><span class="footer-link" tabindex="0" data-page="browse" data-filter="style" data-val="contemporary">Contemporary</span></li>
+            <li><span class="footer-link" tabindex="0" data-page="browse" data-filter="style" data-val="industrial">Industrial</span></li>
           </ul>
         </div>
         <div class="footer-col">
-          <p class="footer-col-title">Company</p>
+          <p class="footer-col-title">Personalize</p>
           <ul class="footer-links" role="list">
-            <li><span class="footer-link" tabindex="0">About NEST</span></li>
-            <li><span class="footer-link" tabindex="0">Privacy Policy</span></li>
-            <li><span class="footer-link" tabindex="0">Terms of Use</span></li>
-            <li><span class="footer-link" tabindex="0">Contact</span></li>
+            <li><span class="footer-link" tabindex="0" data-page="personalize">Personalize Your Space</span></li>
+            <li><span class="footer-link" tabindex="0" data-page="favourites">Saved Collection</span></li>
           </ul>
         </div>
       </div>
@@ -399,8 +402,25 @@ function renderFooter() {
     </div>
   `;
 
-  footer.querySelectorAll('.footer-link[data-page]').forEach(link => {
-    link.addEventListener('click', () => navigate(link.dataset.page));
+  footer.querySelectorAll('.footer-link').forEach(link => {
+    const handleAction = () => {
+      const page = link.dataset.page;
+      const filterType = link.dataset.filter;
+      const filterVal = link.dataset.val;
+      if (filterType && filterVal) {
+        resetFilters();
+        setFilter(filterType, filterVal);
+      }
+      if (page) navigate(page);
+    };
+
+    link.addEventListener('click', handleAction);
+    link.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleAction();
+      }
+    });
   });
 
   return footer;

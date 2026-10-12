@@ -973,6 +973,30 @@ h4, h5, h6 { font-family: var(--font-sans); font-weight: 600; line-height: 1.3; 
 .design-card-budget {
   font-size: 0.8125rem;
   color: var(--stone);
+  font-weight: 500;
+}
+
+.design-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+  gap: var(--space-sm);
+}
+
+.design-card-view-link {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--forest);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: transform var(--transition), color var(--transition);
+}
+
+.design-card:hover .design-card-view-link {
+  color: var(--forest-mid);
+  transform: translateX(3px);
 }
 
 /* --- Filter Bar --- */

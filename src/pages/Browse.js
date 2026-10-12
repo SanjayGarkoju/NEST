@@ -1,4 +1,4 @@
-import { designs, categories, styles as styleData, budgetRanges } from '../data.js';
+import { designs, categories, styles as styleData, budgetRanges, colours as colourData } from '../data.js';
 import { navigate, getFilters, setFilter, resetFilters } from '../state.js';
 import { renderDesignCard } from '../components/DesignCard.js';
 import { initScrollReveal } from '../components/ScrollReveal.js';
@@ -62,6 +62,14 @@ export function renderBrowse() {
     </div>
 
     <div class="filter-group">
+      <label class="filter-label" for="filter-colour">Colour</label>
+      <select class="filter-select" id="filter-colour" aria-label="Filter by colour">
+        <option value="all">All Colours</option>
+        ${colourData.map(cl => `<option value="${cl.id}">${cl.name}</option>`).join('')}
+      </select>
+    </div>
+
+    <div class="filter-group">
       <label class="filter-label" for="filter-budget">Budget</label>
       <select class="filter-select" id="filter-budget" aria-label="Filter by budget">
         <option value="all">All Budgets</option>
@@ -95,11 +103,13 @@ export function renderBrowse() {
   const searchInput = filtersBar.querySelector('#filter-search');
   const categorySelect = filtersBar.querySelector('#filter-category');
   const styleSelect = filtersBar.querySelector('#filter-style');
+  const colourSelect = filtersBar.querySelector('#filter-colour');
   const budgetSelect = filtersBar.querySelector('#filter-budget');
 
   searchInput.value = filters.search;
   if (filters.category !== 'all') categorySelect.value = filters.category;
   if (filters.style !== 'all') styleSelect.value = filters.style;
+  if (filters.colour && filters.colour !== 'all') colourSelect.value = filters.colour;
   if (filters.budget !== 'all') budgetSelect.value = filters.budget;
 
   function applyFilters() {
@@ -136,9 +146,11 @@ export function renderBrowse() {
       if (q && !d.title.toLowerCase().includes(q) &&
           !d.category.toLowerCase().includes(q) &&
           !d.style.toLowerCase().includes(q) &&
+          !d.description.toLowerCase().includes(q) &&
           !d.tags.some(t => t.toLowerCase().includes(q))) return false;
       if (f.category !== 'all' && d.category !== catMap[f.category]) return false;
       if (f.style !== 'all' && d.style !== styleMap[f.style]) return false;
+      if (f.colour && f.colour !== 'all' && d.colour !== f.colour) return false;
       if (f.budget !== 'all') {
         const keywords = budgetKeywords[f.budget] || [];
         if (!keywords.some(k => d.budget.includes(k))) return false;
@@ -185,6 +197,11 @@ export function renderBrowse() {
     applyFilters();
   });
 
+  colourSelect.addEventListener('change', () => {
+    setFilter('colour', colourSelect.value);
+    applyFilters();
+  });
+
   budgetSelect.addEventListener('change', () => {
     setFilter('budget', budgetSelect.value);
     applyFilters();
@@ -195,6 +212,7 @@ export function renderBrowse() {
     searchInput.value = '';
     categorySelect.value = 'all';
     styleSelect.value = 'all';
+    colourSelect.value = 'all';
     budgetSelect.value = 'all';
     applyFilters();
   });
